@@ -1,5 +1,9 @@
 # fluentd-monasca
-Fluentd output plugin for monasca
+Fluentd output plugin for the Monasca API.
+
+Note that this does not support the Monasca Log API which has been
+deprecated. If you wish to use the Monasca Log API, please use release
+0.1.1.
 
 ## Requirements
 * `ruby`
@@ -13,15 +17,15 @@ To install the `fluentd-monasca-output` gem:
     td-agent-gem install fluentd-monasca-output
 
 ## Configuration
-Example `td-agent.conf` configuration that forwards all logs to monasca:
+Example `td-agent.conf` configuration that forwards all logs to Monasca:
 
     <match *.**>
         type copy
         <store>
            @type monasca
            keystone_url <keystone URL>
-           monasca_log_api <log API URL>
-           monasca_log_api_version v3.0
+           monasca_api <Monasca API URL>
+           monasca_api_version v2.0
            username <username>
            password <password>
            domain_id <domain ID>
@@ -38,3 +42,11 @@ Buffering of logs by default is to memory. Buffering settings are detailed in th
     buffer_type file
     buffer_path /var/lib/fluentd/data/monasca.*.buffer
     max_retry_wait 10s
+
+There is currently no support for looking up a logging endpoint from the Keystone catalogue.
+
+## Changelog
+
+### 1.0.0
+ - Support posting logs to the unified Monasca API
+ - Remove support for posting logs to Monasca Log API

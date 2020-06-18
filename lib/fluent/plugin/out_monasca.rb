@@ -2,7 +2,7 @@
 require 'date'
 require 'uri'
 
-require_relative './monasca/monasca_log_api_client'
+require_relative './monasca/monasca_api_client'
 require_relative './keystone/keystone_client'
 
 begin
@@ -14,8 +14,8 @@ class Fluent::MonascaOutput < Fluent::BufferedOutput
   Fluent::Plugin.register_output('monasca', self)
 
   config_param :keystone_url, :string
-  config_param :monasca_log_api, :string
-  config_param :monasca_log_api_version, :string
+  config_param :monasca_api, :string
+  config_param :monasca_api_version, :string
   config_param :username, :string
   config_param :password, :string, secret: true
   config_param :domain_id, :string
@@ -38,7 +38,7 @@ class Fluent::MonascaOutput < Fluent::BufferedOutput
   def start
     super
     @keystone_client = Keystone::Client.new @keystone_url, @log
-    @monasca_log_api_client = Monasca::get_log_api_client @monasca_log_api, @monasca_log_api_version, @log
+    @monasca_api_client = Monasca::get_api_client @monasca_api, @monasca_api_version, @log
     @token = authenticate
     @log.info('Authenticated keystone user:', username: @username, project_name: @project_name)
   end
@@ -61,7 +61,7 @@ class Fluent::MonascaOutput < Fluent::BufferedOutput
     # chunk is a Fluent::MemoryBufferChunk or Fluent::FileBufferChunk.
     validate_token
     # Send the events in bulk if possible.
-    if @monasca_log_api_client.supports_bulk?
+    if @monasca_api_client.supports_bulk?
       write_bulk chunk
     else
       write_single chunk
@@ -114,10 +114,10 @@ class Fluent::MonascaOutput < Fluent::BufferedOutput
   end
 
   def send_log(message, dimensions)
-    @monasca_log_api_client.send_log(message, @token.id, dimensions) if @token.id && message
+    @monasca_api_client.send_log(message, @token.id, dimensions) if @token.id && message
   end
 
   def send_logs_bulk(logs, dimensions)
-    @monasca_log_api_client.send_logs_bulk(logs, @token.id, dimensions) if @token.id && logs
+    @monasca_api_client.send_logs_bulk(logs, @token.id, dimensions) if @token.id && logs
   end
 end

@@ -3,7 +3,7 @@ $LOAD_PATH.push File.expand_path('../lib', __FILE__)
 
 Gem::Specification.new do |spec|
   spec.name = 'fluentd-monasca-output'
-  spec.version = '1.0.0'
+  spec.version = '1.0.1'
   spec.licenses = ['Apache-2.0']
   spec.authors = ['Fujitsu Enabling Software Technology GmbH']
   spec.email = ['atanas.mirchev@est.fujitsu.com']
@@ -18,6 +18,7 @@ Gem::Specification.new do |spec|
 
   spec.add_runtime_dependency 'fluentd', '>= 0.10.43', '<0.14'
   spec.add_runtime_dependency 'rest-client', '~> 1.8'
+  spec.add_runtime_dependency 'yajl-ruby', '~> 1.4', '>= 1.4.1'
 
   spec.add_development_dependency 'rake'
   spec.add_development_dependency 'webmock', '~> 1'

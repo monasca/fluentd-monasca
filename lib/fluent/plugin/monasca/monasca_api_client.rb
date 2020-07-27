@@ -9,7 +9,7 @@
 
 # encoding: utf-8
 
-require 'json'
+require 'yajl/json_gem'
 require 'rest-client'
 
 # relative requirements

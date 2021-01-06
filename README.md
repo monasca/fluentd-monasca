@@ -51,4 +51,6 @@ There is currently no support for looking up a logging endpoint from the Keyston
  - Support posting logs to the unified Monasca API
  - Remove support for posting logs to Monasca Log API
 ### 1.0.1
- - Swith to yajl JSON parser to fix issue parsing some logs
+ - Switch to yajl JSON parser to fix issue parsing some logs
+### 1.0.2
+ - Upgrade rest-client library to work with openssl 2.x
